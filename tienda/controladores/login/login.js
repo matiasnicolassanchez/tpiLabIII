@@ -206,12 +206,16 @@ export function setUsuarioAutenticado(booleano, idUsuario) {
 
 
 }
-export function getUsuarioAutenticado() {
+export function  getUsuarioAutenticado() {
     /**
      * 1- Esta función debera leer los valores almacenados en el sessionStorage y construir un objeto con los valores
      * autenticado, idUsuario y email.
      * 2- Luego los devolverá como resultado.
      */
-    
+    var session = new Object()
+    session.autenticado = sessionStorage.getItem('autenticado') === "true";
+    session.idUsuario = sessionStorage.getItem('idUsuario');
+    session.email = sessionStorage.getItem('email');
+    return session
        
 }
