@@ -1,5 +1,6 @@
 /**ESTE COMPONENTE SE ENCARGA DE MOSTRAR EL DETALLE DE UN PRODUCTO */
 import { productosServices } from "../../../servicios/productos-servicios.js";
+import { usuariosServices } from "../../../servicios/usuarios-servicios.js";
 import { ventasServices } from "../../../servicios/ventas-servicios.js";
 import { getUsuarioAutenticado, mostrarMensaje } from "../login/login.js";
 
@@ -94,20 +95,21 @@ function registrarCompra() {
      *     
      */
     
-    var session = getUsuarioAutenticado()
+    var session = getUsuarioAutenticado();
     if (!session.autenticado) {
-        mostrarMensaje('¡¡¡ ANTES DE REALIZAR LA COMPRA USTED DEBE INICIAR SESION !!!')
+        mostrarMensaje('¡¡¡ ANTES DE REALIZAR LA COMPRA USTED DEBE INICIAR SESION !!!');
     } else {
-        let nombreProducto = document.querySelector("#nameProducto")
-        let cantProducto = document.querySelector("#cantidadProducto")
-        let idProducto = nombreProducto.getAttribute('data-idproducto')
-        let fecha = Date()
+        let nombreProducto = document.querySelector("#nameProducto");
+        let cantProducto = document.querySelector("#cantidadProducto");
+        let idProducto = nombreProducto.getAttribute('data-idproducto');
+        let fecha = Date();
+        let idUsuario = sessionStorage.getItem('idUsuario');
+        let emailUsuario = sessionStorage.getItem('email');
 
-        ventasServices.crear(null, null, idProducto, nombreProducto, cantProducto, fecha, null)
+        ventasServices.crear(idUsuario, emailUsuario, idProducto, nombreProducto, cantProducto, fecha, null);
+        location.replace('tienda.html');
 
-        location.replace('tienda.html')
-
-        mostrarMensaje('¡¡ COMPRA FINALIZADA !!')
+        mostrarMensaje('¡¡ COMPRA FINALIZADA !!');
     }
 
 }
