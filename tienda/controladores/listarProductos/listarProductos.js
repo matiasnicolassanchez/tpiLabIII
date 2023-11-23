@@ -7,7 +7,18 @@ function htmlCategoria(id, categoria){
     /*SE DEBERÁ CONCATENAR PARA INCORPORAR EL id DE LA CATEGORIA AL ATRIBUTO data-idCategoria  */
     /*Y ADEMAS REEMPLAZAR EL TEXTO Nombre de Categoría POR EL VALOR QUE LLEGA AL PARAMETRO CATEGORIA DE LA FUNCION*/
     /*POR ULTIMO, LA FUNCION DEVOLVERA LA CADENA RESULTANTE*/   
+    let htmlCategoriasProdctos = 
+    `<div class="categoria" data-idCategoria="${id}">
+        <h1 class="categoria">${categoria}</h1>
+        <div class="productos">
+        
+            <!-- Aca se listan los productos-->
+            <p class="item-producto">Sin productos.</p>
     
+        </div>                
+    </div>`;
+
+    return htmlCategoriasProdctos;
 
 }
 
@@ -22,8 +33,18 @@ function htmlItemProducto(id, imagen, nombre, precio){
      *   let cadena = `Hola, ${titulo} Claudia  en que podemos ayudarla`;
      *   
     */
-    
+    let htmlItem = 
+    `<div class="item-producto">
 
+        <img src="${imagen}" >
+        <p class="producto_nombre" name="motorola">${nombre}</p>
+        <p class="producto_precio">${precio}</p>
+
+        <a href="?idProducto=${id}#vistaProducto" type="button" class="producto_enlace" >Ver producto</a>
+
+    </div>`;
+
+    return htmlItem;
 
 }
 
@@ -33,7 +54,14 @@ async function asignarProducto(id){
     /*3- EN EL INTERIOR DEL BUCLE DEBERA LLAMAR A LA FUNCION htmlItemProducto y acumular su resultado en una cadena de caracteres */
     /*4- LUEGO DEL BUCLE Y CON LA CADENA RESULTANTE SE DEBE CAPTURAR EL ELEMENTO DEL DOM PARA ASIGNAR ESTOS PRODUCTOS DENTRO DE LA CATEGORIA CORRESPONDIENTE */
     /*5- PARA ELLO PODEMOS HACER USO DE UN SELECTOR CSS QUE SELECCIONE EL ATRIBUTO data-idCategoria=X, Ó LA CLASE .productos  .SIENDO X EL VALOR LA CATEGORIA EN CUESTION.*/ 
-     
+    await productosServices.listarPorCategoria()
+        .then(lista => {
+            lista.forEach(element => {
+                let newProducto = htmlItemProducto(element.id, element.imagen, element.nombre, element.precio)
+                let listaProdctos = document.querySelector('.prodctos')
+                listaProdctos.appendChild(newProducto)
+            })
+        })
      
         
 
@@ -46,7 +74,15 @@ export async function listarProductos(){
      /* 4- SE DEBERA ASIGNAR EL RESULTADO DE FUNCION ANTERIOR AL ELEMENTO DEL DOM .seccionProductos */
      /* 5- LUEGO DEBERÁ LLAMAR UNA FUNCION, asignarProducto, QUE RECIBA COMO PARAMETRO EL ID DE LA CATEGORIA  */
      /* 6- FIN DEL BUCLE Y FIN DE LA FUNCION */   
-
+    let seccionProducto = document.querySelector('.seccionProdctos');
+    
+    await categoriasServices.listar()
+        .then(lista => {
+            lista.forEach(element => {
+                seccionProducto.innerHTML = htmlCategoria(element.id, element.categoria)
+                asignarProducto(element.id)
+            });
+        });
      
 }  
 

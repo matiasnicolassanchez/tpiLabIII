@@ -149,7 +149,7 @@ function crearFormulario(registrar){
     inputPassword = document.querySelector('#loginPassword');
     inputRepetirPass = document.querySelector('#reLoginPassword');
 
-    if (!registrar) {
+    if (!registrar) { /*FIJARSE SI ESTA BIEN ESTA PARTE DE ELIMINAR LA PARTE DEL FORMLARIO DE REPETIR LA CONTRASEÑA*/
       let reLoginPassword = document.querySelector('#reLoginPassword');
       reLoginPassword.innerHTML = '';
     } else {
